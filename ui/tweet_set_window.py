@@ -71,6 +71,8 @@ class TweetSetWindow(tk.Toplevel):
         try:
             def get_participant_string(participant: Dict) -> str:
                 authorizations = participant['user'].get('authorizations', [])
+                if authorizations is None:
+                    authorizations = []
                 twitter_auth = next((auth for auth in authorizations if auth['type'] == 'TWITTER'), None)
                 if twitter_auth:
                     return f"@{twitter_auth['externalUsername']}"
