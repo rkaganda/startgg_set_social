@@ -1,4 +1,4 @@
-name: Create exe, zip files for release
+name: Zips pre-created release
 
 on:
   workflow_dispatch: # manual
