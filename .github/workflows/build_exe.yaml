@@ -52,4 +52,4 @@ jobs:
     - name: Create GitHub Release and Upload Zip
       run: |
         echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
-        gh release create ${{ github.ref }} StartGG_Set_Social.zip --title "Release ${{ github.ref }}" --notes "Release notes for ${{ github.ref }}"
+        gh release create "${{ github.ref_name }}" StartGG_Set_Social.zip --title "Release ${{ github.ref_name }}" --notes "Release notes for ${{ github.ref_name }}"
