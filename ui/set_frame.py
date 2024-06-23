@@ -36,6 +36,17 @@ class SlotFrame(tk.Frame):
             for auth in authorizations:
                 self.table.insert("", "end", values=(auth['type'], auth['externalUsername']))
 
+        # Bind the double-click event to copy the Username cell content
+        self.table.bind("<Double-1>", self.copy_to_clipboard)
+
+    def copy_to_clipboard(self, event):
+        selected_item = self.table.selection()[0]  # Get the selected item
+        column = self.table.identify_column(event.x)  # Get the column clicked
+        if column == "#2":  # If the Username column is clicked (column index starts from 1)
+            value = self.table.item(selected_item, "values")[1]  # Get the Username column value
+            self.clipboard_clear()
+            self.clipboard_append(value)
+
 class SetFrame(tk.Frame):
     def __init__(self, master: tk.Widget = None, set_data: Optional[Dict] = None) -> None:
         super().__init__(master)
