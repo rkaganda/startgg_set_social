@@ -36,9 +36,10 @@ jobs:
       run: choco install 7zip
 
     - name: Create standalone executable with Nuitka
-      env:
-        NUITKA_DOWNLOAD_GCC: yes
-      run: nuitka --standalone --onefile --mingw64 main.py --output-dir=dist --output-filename=StartGGSetSocial --enable-plugin=tk-inter --windows-console-mode=disable
+      shell: powershell
+      run: |
+        $env:NUITKA_DOWNLOAD_GCC = "yes"
+        nuitka --standalone --onefile --mingw64 main.py --output-dir=dist --output-filename=StartGGSetSocial --enable-plugin=tk-inter --windows-console-mode=disable
 
     - name: Create exe zip bundle
       run: |
