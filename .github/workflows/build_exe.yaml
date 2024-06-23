@@ -42,8 +42,10 @@ jobs:
     - name: Create exe zip bundle
       run: |
         7z a 'StartGG_Set_Social.zip' './dist/StartGG_Set_Social.exe'
-        7z a 'StartGG_Set_Social.zip' './templates/game_hashtags.yaml' -r -p'./templates/'
-        7z a 'StartGG_Set_Social.zip' './templates/tweets.yaml' -r -p'./templates/'
+        7z a 'StartGG_Set_Social.zip' './templates/game_hashtags.yaml' -r
+        7z a 'StartGG_Set_Social.zip' './templates/tweets.yaml' -r
+        7z rn 'StartGG_Set_Social.zip' 'game_hashtags.yaml' 'templates/game_hashtags.yaml'
+        7z rn 'StartGG_Set_Social.zip' 'tweets.yaml' 'templates/tweets.yaml'
 
     - name: Install GitHub CLI
       run: |
