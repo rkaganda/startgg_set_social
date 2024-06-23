@@ -104,9 +104,12 @@ class TweetSetWindow(tk.Toplevel):
             # Assign the 'stream_urls' key
             stream = startgg_set['set'].get('stream', {})
             stream_urls = []
-            if stream.get('streamSource') == 'TWITCH':
-                stream_urls.append(f"https://www.twitch.tv/{stream['streamName']}")
-            tweet_mappings['stream_urls'] = ', '.join(stream_urls)
+            if stream:
+                if stream.get('streamSource') == 'TWITCH':
+                    stream_urls.append(f"https://www.twitch.tv/{stream['streamName']}")
+                tweet_mappings['stream_urls'] = ', '.join(stream_urls)
+            else:
+                tweet_mappings['stream_urls'] = ''
 
             # Load the game hashtags from a YAML file
             with open('templates/game_hashtags.yaml', 'r') as file:
@@ -120,5 +123,6 @@ class TweetSetWindow(tk.Toplevel):
             print(tweet_mappings)
             return tweet_mappings
         except Exception as e:
+            logger.info(f"tweet_mappings={tweet_mappings}")
             logger.error(f"Failed to map tweet template: {e}")
             raise
