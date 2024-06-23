@@ -28,22 +28,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install greenlet
         pip install -r requirements.txt
+        
 
-    - name: Install Nuitka
-      run: pip install nuitka
+    - name: Install PyInstaller
+      run: pip install pyinstaller
 
     - name: Install 7-Zip
       run: choco install 7zip
 
-    - name: Create standalone executable with Nuitka
-      shell: powershell
-      run: |
-        $env:NUITKA_DOWNLOAD_GCC = "yes"
-        nuitka --standalone --onefile --mingw64 main.py --output-dir=dist --output-filename=StartGGSetSocial --enable-plugin=tk-inter --windows-console-mode=disable
+    - name: Create standalone executable
+      run: pyinstaller --noconsole --onefile --name=StartGG_Set_Social --hidden-import=babel.numbers main.py
 
     - name: Create exe zip bundle
       run: |
-        7z a 'StartGG_Set_Social.zip' './dist/StartGGSetSocial.exe'
+        7z a 'StartGG_Set_Social.zip' './dist/StartGG_Set_Social.exe'
         7z a 'StartGG_Set_Social.zip' './templates/game_hashtags.yaml' -r -p'./templates/'
         7z a 'StartGG_Set_Social.zip' './templates/tweets.yaml' -r -p'./templates/'
 
