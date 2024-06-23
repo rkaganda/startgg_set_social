@@ -28,7 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install greenlet
         pip install -r requirements.txt
-        
+
     - name: Install Nuitka
       run: pip install nuitka
 
@@ -36,7 +36,9 @@ jobs:
       run: choco install 7zip
 
     - name: Create standalone executable with Nuitka
-      run: nuitka --standalone --onefile --mingw64 main.py --output-dir=dist --output-filename=StartGGSetSocial --enable-plugin=tk-inter --windows-console-mode=disable
+      run: |
+        set NUITKA_DOWNLOAD_GCC=yes
+        nuitka --standalone --onefile --mingw64 main.py --output-dir=dist --output-filename=StartGGSetSocial --enable-plugin=tk-inter --windows-console-mode=disable
 
     - name: Create exe zip bundle
       run: |
