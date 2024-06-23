@@ -16,23 +16,23 @@ class MainWindow:
 
         # LoadSetWidget
         self.load_set_widget = LoadSetWidget(self.root, main_window=self)
-        self.load_set_widget.grid(row=0, column=0, pady=20, padx=20, sticky="w")
+        self.load_set_widget.grid(row=0, column=0, pady=10, padx=10, sticky="w")
 
         # Tweet Set button
         self.tweet_set_button = tk.Button(self.root, text="Tweet Set", command=self.open_tweet_set_window)
-        self.tweet_set_button.grid(row=0, column=1, pady=20, padx=20, sticky="w")
+        self.tweet_set_button.grid(row=0, column=1, pady=10, padx=10, sticky="w")
 
         # SetFrame placeholder
         self.set_frame = SetFrame(self.root)
-        self.set_frame.grid(row=1, column=0, columnspan=2, pady=20, padx=20, sticky="ew")
+        self.set_frame.grid(row=1, column=0, columnspan=2, pady=5, padx=10, sticky="ew")
 
         # Status label
         self.status_label = tk.Label(self.root, text="", anchor="w", width=50)
-        self.status_label.grid(row=2, column=0, pady=20, padx=20, sticky="ew")
+        self.status_label.grid(row=2, column=0, pady=10, padx=10, sticky="ew")
 
         # Button to open config window
         self.config_button = tk.Button(self.root, text="Config", command=self.open_config_window)
-        self.config_button.grid(row=2, column=1, pady=20, padx=20, sticky="e")
+        self.config_button.grid(row=2, column=1, pady=10, padx=10, sticky="e")
 
         # Configure grid column weights for resizing
         self.root.grid_columnconfigure(0, weight=1)

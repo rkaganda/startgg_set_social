@@ -21,11 +21,14 @@ class SlotFrame(tk.Frame):
         self.name_label = tk.Label(self, text=f"Entrant: {entrant_name}")
         self.name_label.pack(anchor="w")
 
-        # Create the table for authorizations
-        self.table = ttk.Treeview(self, columns=("Type", "Username"), show="headings")
+        # Create the table for authorizations with a default height of 3 rows
+        self.table = ttk.Treeview(self, columns=("Type", "Username"), show="headings", height=3)
         self.table.heading("Type", text="Type")
         self.table.heading("Username", text="Username")
         self.table.pack(fill="x", expand=True)
+
+        self.table.column("Type", width=100)  # Set the width for the "Type" column
+        self.table.column("Username", width=150)  # Set the width for the "Username" column
 
         # Insert authorizations into the table
         authorizations = entrant['participants'][0]['user']['authorizations']
