@@ -45,7 +45,8 @@ class MainWindow:
         if self.tweet_set_window is None or not self.tweet_set_window.winfo_exists():
             self.tweet_set_window = TweetSetWindow(self.root, self)
         else:
-            logger.info("Tweet Set window is already open")
+            self.tweet_set_window.lift()
+            logger.info("Tweet Set window is already open and brought to front")
 
     def tweet_set(self) -> None:
         self.open_tweet_set_window()
@@ -54,7 +55,8 @@ class MainWindow:
         if self.config_window is None or not self.config_window.winfo_exists():
             self.config_window = ConfigWindow(self.root)
         else:
-            logger.info("Config window is already open")
+            self.config_window.lift()
+            logger.info("Config window is already open and brought to front")
 
     def update_status(self, message: str, level: str) -> None:
         colors = {
@@ -81,4 +83,3 @@ class MainWindow:
 if __name__ == "__main__":
     main_window = MainWindow()
     main_window.run()
-
