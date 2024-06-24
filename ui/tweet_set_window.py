@@ -2,7 +2,7 @@
 import yaml
 import tkinter as tk
 from tkinter import ttk, messagebox
-from typing import Dict
+from typing import Dict, Any
 from logging_config import logger
 
 class TweetSetWindow(tk.Toplevel):
@@ -67,24 +67,44 @@ class TweetSetWindow(tk.Toplevel):
             self.main_window.update_status(f"Error copying tweet: {e}", "error")
 
     @staticmethod
-    def create_entrants_string(startgg_set: Dict) -> str:
+    def create_entrants_info(startgg_set: Dict[str, Any]) -> Dict[str, str]:
         try:
-            def get_participant_string(participant: Dict) -> str:
-                authorizations = participant['user'].get('authorizations', [])
+            def get_participant_string(_participant: Dict[str, Any]) -> str:
+                authorizations = _participant['user'].get('authorizations', [])
                 if authorizations is None:
                     authorizations = []
                 twitter_auth = next((auth for auth in authorizations if auth['type'] == 'TWITTER'), None)
                 if twitter_auth:
                     return f"@{twitter_auth['externalUsername']}"
                 else:
-                    return participant['gamerTag']
+                    return _participant['gamerTag']
 
             slots = startgg_set['set']['slots']
-            participants_strings = [get_participant_string(slot['entrant']['participants'][0]) for slot in slots]
+            participants = []
+            participants_strings = []
+
+            for slot in slots:
+                participant = slot['entrant']['participants'][0]
+                participant_string = get_participant_string(participant)
+                participants_strings.append(participant_string)
+                score = slot['standing']['stats']['score']['value']
+                participants.append((participant_string, score))
+
+            # Sort participants based on their scores in descending order
+            participants.sort(key=lambda x: x[1], reverse=True)
+
+            winner = participants[0][0]
+            winner_score = participants[0][1]
+            loser = participants[1][0] if len(participants) > 1 else ""
+            loser_score = participants[1][1] if len(participants) > 1 else 0
+
             entrants_string = " vs ".join(participants_strings)
-            return entrants_string
+
+            return {'winner': winner, 'loser': loser, 'entrants': entrants_string, 'winner_score': winner_score,
+                    'loser_score': loser_score}
+
         except Exception as e:
-            logger.error(f"Failed to create entrants string: {e}")
+            logger.error(f"Failed to create entrants info: {e}")
             raise
 
     @staticmethod
@@ -92,7 +112,7 @@ class TweetSetWindow(tk.Toplevel):
         try:
             # Create the tweet_mappings dictionary and
             # Assign the 'entrants' key the return value of create_entrants_string
-            tweet_mappings = {'entrants': TweetSetWindow.create_entrants_string(startgg_set)}
+            tweet_mappings = TweetSetWindow.create_entrants_info(startgg_set)
 
             # Assign the 'event_url' key
             event_slug = startgg_set['set']['event'].get('slug', "")
@@ -117,12 +137,14 @@ class TweetSetWindow(tk.Toplevel):
 
             # Assign the 'game' key
             videogame_name = startgg_set['set']['event']['videogame']['name']
-            tweet_mappings['game'] = game_hashtags.get(videogame_name, "")
+            tweet_mappings['game_name'] = videogame_name
+            tweet_mappings['game_hashtag'] = game_hashtags.get(videogame_name, "")
 
             logger.info("Tweet mappings created successfully")
             print(tweet_mappings)
             return tweet_mappings
         except Exception as e:
-            logger.info(f"tweet_mappings={tweet_mappings}")
+            if 'tweet_mappings' in locals():
+                logger.info(f"tweet_mappings={tweet_mappings}")
             logger.error(f"Failed to map tweet template: {e}")
             raise

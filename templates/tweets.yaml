@@ -1,1 +1,14 @@
-pfgg_match_starting: "{entrants} \n🏆:{event_name}\n{event_url} \n📺: {stream_urls}\n #PFGG {game}"
+# TWEET ARGS
+# entrants - string that has the entrants in the form, player, player ... vs player, player ..., uses players twitter handle if exists
+# winner - current winner entrant(s), uses players twitter handle if exists
+# loser - current loser entrant(s), uses players twitter handle if exists
+# winner_score - current winners score
+# loser_score - current losers score
+# event_name - startgg event name
+# event_url - startgg event url
+# stream_urls - stream urls (empty string if no stream}
+# game_name - startgg game name
+# game_hashtag - game twitter hashtag, loaded from game_hashtags.yaml, empty string if no mapping is found
+
+pfgg_match_starting: "{entrants} \n🏆:{event_name}\n{event_url} \n📺: {stream_urls}\n #PFGG {game_hashtag}"
+pfgg_match_finished: "{winner} takes it {winner_score}-{loser_score} over {loser} \n🏆:{event_name}\n{event_url} \n📺: {stream_urls}\n #PFGG {game_hashtag}"
